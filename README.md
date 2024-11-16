@@ -2,7 +2,7 @@ VisionMate:
 Real-Time Object Detection Android App for the Visually Impaired
 
 Project Overview:
-This project aims to develop an Android application that assists visually impaired individuals by providing real-time object detection and warnings. Using TensorFlow Lite's EfficientDet model, the application detects objects through a live camera feed and announces their presence, enhancing user awareness and safety. The project focuses on making object detection more accessible and practical through various features and optimizations.
+This project aims to develop an Android application that assists visually impaired individuals by providing real-time object detection and warnings. Using EfficientDet model, the application detects objects through a live camera feed and announces their presence, enhancing user awareness and safety. The project focuses on making object detection more accessible and practical through various features and optimizations.
 
 Key Features:
 Real-Time Object Detection: The application leverages TensorFlow Lite's EfficientDet model to detect objects in real-time from a live camera feed.
