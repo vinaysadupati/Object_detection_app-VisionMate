@@ -1,0 +1,2 @@
+com/example/objectdetectionlivefeed/test/BuildConfig.java
+ com.example.objectdetectionlivefeed.test.BuildConfig
