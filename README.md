@@ -1,4 +1,4 @@
-VisionMate
+VisionMate:
 Real-Time Object Detection Android App for the Visually Impaired
 
 Project Overview:
