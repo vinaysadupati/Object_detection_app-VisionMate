@@ -366,7 +366,7 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
             val objectHeight = knownObjectHeight[detectedObject] ?: continue // Skip if height is not found
 
 // Calculate the distance
-            val distance = (objectHeight * focalLengthPixels / objectHeightInImage) / 2
+            val distance = (objectHeight * focalLengthPixels / objectHeightInImage)
 
 
 
