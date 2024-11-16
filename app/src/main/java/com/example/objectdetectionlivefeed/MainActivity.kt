@@ -37,7 +37,6 @@ import kotlin.math.roundToInt
 
 
 class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
-
     private var detectionCounts = mutableMapOf<String, Int>()
     private val maxAnnouncements = 2
     private var handler = Handler(Looper.getMainLooper())
@@ -53,8 +52,9 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var mediaPlayer: MediaPlayer
     private var previousDistances = mutableMapOf<String, Float>()
-    private val horizontalFoV = 60.0 // Replace with your actual horizontal FoV.
-    private val verticalFoV = 45.0 // Replace with your actual vertical FoV.
+    private val horizontalFoV = 60.0 
+    private val verticalFoV = 45.0 
+    private var focalLengthPixels = 0.0f
 
     // Parameters for distance calculation
     val knownObjectHeight = mapOf(
@@ -157,11 +157,6 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
         "hair dryer" to 0.3f,
         "toothbrush" to 0.2f
     )
-
-    private var focalLengthPixels = 0.0f // Now set as Float
-    private val baselineDistance = 0.06f // Distance between cameras in meters for stereo vision
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -365,10 +360,8 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
             val objectHeightInImage = location.height() // Height of the object in pixels
             val objectHeight = knownObjectHeight[detectedObject] ?: continue // Skip if height is not found
 
-// Calculate the distance
+            // Calculate the distance
             val distance = (objectHeight * focalLengthPixels / objectHeightInImage)
-
-
 
             if (distance < 0.75f && !mediaPlayer.isPlaying) {
                 mediaPlayer.start() // Play the buzzer sound
@@ -390,28 +383,23 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
             val frameCenterX = previewWidth / 2f
             val frameCenterY = previewHeight / 2f
 
-// Calculate the relative position of the object center in the frame
+            // Calculate the relative position of the object center in the frame
             val deltaX = objectCenterX - frameCenterX
             val deltaY = objectCenterY - frameCenterY
 
-// Calculate the angle using the relative position scaled by the FoV, then normalize
+            // Calculate the angle using the relative position scaled by the FoV, then normalize
             val rawAngleX = Math.toDegrees(deltaX / frameCenterX * (horizontalFoV / 2))
             val rawAngleY = Math.toDegrees(deltaY / frameCenterY * (verticalFoV / 2))
 
-// Normalize angles to be within -180° to +180° range
+            // Normalize angles to be within -180° to +180° range
             val angleX = rawAngleX.coerceIn(-horizontalFoV / 2, horizontalFoV / 2).roundToInt()
             val angleY = rawAngleY.coerceIn(-verticalFoV / 2, verticalFoV / 2).roundToInt()
-
-
-
 
             // Add information to the announcements
             objectsToAnnounce.add(
                 "There is a $detectedObject approximately ${"%.2f".format(distance)} meters away at angle (${angleX}°, ${angleY}°), $movementStatus."
             )
         }
-
-
 
         // Speak out the announcements
         if (objectsToAnnounce.isNotEmpty() && !textToSpeech.isSpeaking) {
@@ -426,9 +414,6 @@ class MainActivity : AppCompatActivity(), ImageReader.OnImageAvailableListener {
             }
         }, 5000)
     }
-
-
-
 
     override fun onDestroy() {
         super.onDestroy()
